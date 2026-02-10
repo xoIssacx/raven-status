@@ -104,17 +104,27 @@
             display: none;
         }
     </style>
+
+    <!-- Cloudflare Turnstile -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
 
     <div class="status-container">
         <div class="logo-circle">RL</div>
         <h1>Check Application Status</h1>
-        <p>Enter your Discord username to check your application status.</p>
+        <p>Enter your Discord username and complete the verification.</p>
 
-        <p id="errorBox" class="error">Please enter a valid Discord username.</p>
+        <p id="errorBox" class="error">Please enter a valid Discord username and complete the CAPTCHA.</p>
 
         <input id="discordInput" type="text" placeholder="example: raven#1234">
+
+        <!-- Turnstile CAPTCHA -->
+        <div class="cf-turnstile" 
+             data-sitekey="0x4AAAAAACaRhcqe4Ul0Osq4"
+             data-theme="dark"
+             data-callback="captchaSuccess">
+        </div>
 
         <button class="submit-btn" onclick="checkStatus()">Check Status</button>
 
@@ -122,13 +132,19 @@
     </div>
 
     <script>
+        let captchaPassed = false;
+
+        function captchaSuccess() {
+            captchaPassed = true;
+        }
+
         function checkStatus() {
             const discord = document.getElementById("discordInput").value.trim();
             const errorBox = document.getElementById("errorBox");
             const resultBox = document.getElementById("resultBox");
 
-            // Basic validation
-            if (!discord || !discord.includes("#")) {
+            // Validation
+            if (!discord || !discord.includes("#") || !captchaPassed) {
                 errorBox.style.display = "block";
                 resultBox.style.display = "none";
                 return;
@@ -136,8 +152,6 @@
 
             errorBox.style.display = "none";
 
-            // Since applications are stored in Discord, we can't auto-check them.
-            // Instead, we give a clean message.
             resultBox.style.display = "block";
             resultBox.innerHTML = `
                 <strong>Status for:</strong> ${discord}<br><br>
