@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Application Status | Raven Logistics</title>
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: radial-gradient(circle at top, #1b1b1f 0, #050509 55%, #000000 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .status-container {
+            background: rgba(5, 5, 10, 0.9);
+            border-radius: 12px;
+            max-width: 500px;
+            width: 100%;
+            padding: 30px 25px 25px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: center;
+        }
+
+        .logo-circle {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            background: linear-gradient(135deg, #3b3bff, #7b7bff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.4rem;
+            box-shadow: 0 0 15px rgba(90, 90, 255, 0.7);
+        }
+
+        h1 {
+            font-size: 1.7rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        p {
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(10, 10, 18, 0.95);
+            color: #ffffff;
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+        input:focus {
+            border-color: #5865F2;
+            box-shadow: 0 0 0 1px rgba(88, 101, 242, 0.6);
+            background: rgba(15, 15, 25, 1);
+            outline: none;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 11px;
+            border-radius: 6px;
+            border: none;
+            background: #5865F2;
+            color: #ffffff;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background: #4752C4;
+        }
+
+        .result-box {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: none;
+        }
+
+        .error {
+            color: #ff4c4c;
+            margin-bottom: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="status-container">
+        <div class="logo-circle">RL</div>
+        <h1>Check Application Status</h1>
+        <p>Enter your Discord username to check your application status.</p>
+
+        <p id="errorBox" class="error">Please enter a valid Discord username.</p>
+
+        <input id="discordInput" type="text" placeholder="example: raven#1234">
+
+        <button class="submit-btn" onclick="checkStatus()">Check Status</button>
+
+        <div id="resultBox" class="result-box"></div>
+    </div>
+
+    <script>
+        function checkStatus() {
+            const discord = document.getElementById("discordInput").value.trim();
+            const errorBox = document.getElementById("errorBox");
+            const resultBox = document.getElementById("resultBox");
+
+            // Basic validation
+            if (!discord || !discord.includes("#")) {
+                errorBox.style.display = "block";
+                resultBox.style.display = "none";
+                return;
+            }
+
+            errorBox.style.display = "none";
+
+            // Since applications are stored in Discord, we can't auto-check them.
+            // Instead, we give a clean message.
+            resultBox.style.display = "block";
+            resultBox.innerHTML = `
+                <strong>Status for:</strong> ${discord}<br><br>
+                Your application has been received.<br>
+                A staff member will contact you on Discord once it has been reviewed.<br><br>
+                If you believe there is an issue, please open a ticket in our Discord server.
+            `;
+        }
+    </script>
+
+</body>
+</html>
